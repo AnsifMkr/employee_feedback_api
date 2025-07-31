@@ -95,7 +95,6 @@ The default server URL is: `http://127.0.0.1:8000`
 | `POST` | `/api/token/refresh/`                                                                  | Refresh JWT access token     |
 | `GET`  | `/api/questions/?feedback_type=employee`                                               | List feedback questions      |
 | `POST` | `/api/submit-feedback/`                                                                | Submit feedback              |
-| `GET`  | `/api/employee/<employee_id>/feedback/`                                                | View feedback by employee    |
 | `GET`  | `/api/designation/<designation_name>/feedback/`                                        | View feedback by designation |
 | `GET`  | `/api/admin/feedback/?designation=Developer&start_date=YYYY-MM-DD&end_date=YYYY-MM-DD` | Admin: Filter feedback       |
 
@@ -153,7 +152,7 @@ The default server URL is: `http://127.0.0.1:8000`
 ### ✅ 4. List Feedback Questions
 
 ```GET /api/questions/?feedback_type=employee```
-Authorization: Bearer <access_token>
+* Authorization: Bearer <access_token>
 - Response
 ```
 [
@@ -165,7 +164,7 @@ Authorization: Bearer <access_token>
 ### ✅ 5. Submit Feedback
 
 ```POST /api/submit-feedback/```
-Authorization: Bearer <access_token>
+* Authorization: Bearer <access_token>
 - Request
 ```
 {
@@ -191,27 +190,8 @@ Authorization: Bearer <access_token>
   ]
 }
 ```
-### ✅ 6. View Feedback by Employee
 
-```GET /api/employee/1/feedback/```
-Authorization: Bearer <access_token>
-- Response
-```
-[
-  {
-    "id": 21,
-    "employee_name": "john_doe",
-    "designation": "Developer",
-    "submitted_by": "alice",
-    "created_at": "2025-07-31T11:45:00Z",
-    "answers": [
-      { "question": 1, "question_text": "How do you rate your work environment?", "rating": 5, "comment": "Excellent environment!" },
-      { "question": 2, "question_text": "How do you rate team collaboration?", "rating": 4, "comment": "Good teamwork and collaboration" }
-    ]
-  }
-]
-```
-### ✅ 7. View Feedback by Designation
+### ✅ 6. View Feedback by Designation
 
 ```GET /api/designation/Developer/feedback/ ```
 Authorization: Bearer <access_token>
