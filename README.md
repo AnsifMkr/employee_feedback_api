@@ -123,8 +123,8 @@ The default server URL is: `http://127.0.0.1:8000`
 - Request
 ```
 {
-  "username": "alice",
-  "password": "admin123"
+  "username": "emma",
+  "password": "password123"
 }
 ```
 - Response
