@@ -88,17 +88,169 @@ Once the server is running, you can access the API endpoints using tools like Po
 The default server URL is: `http://127.0.0.1:8000`
 
 ## API Endpoints
-| Method  | Endpoint | Description |
-| POST	| /api/register/ | Register a new user |
-| POST	| /api/login/ |	Login and get JWT tokens |
-| POST	| /api/token/refresh/ |	Refresh JWT access token |
-| GET	| /api/questions/?feedback_type=employee	| List feedback questions |
-| POST	| /api/submit-feedback/	| Submit feedback |
-| GET	| /api/employee/<employee_id>/feedback/	| View feedback by employee |
-| GET	| /api/designation/<designation_name>/feedback/	| View feedback by designation |
-| GET	| /api/admin/feedback/?designation=Developer&start_date=YYYY-MM-DD&end_date=YYYY-MM-DD |	Admin: Filter feedback |
+| Method | Endpoint                                                                               | Description                  |
+| ------ | -------------------------------------------------------------------------------------- | ---------------------------- |
+| `POST` | `/api/register/`                                                                       | Register a new user          |
+| `POST` | `/api/login/`                                                                          | Login and get JWT tokens     |
+| `POST` | `/api/token/refresh/`                                                                  | Refresh JWT access token     |
+| `GET`  | `/api/questions/?feedback_type=employee`                                               | List feedback questions      |
+| `POST` | `/api/submit-feedback/`                                                                | Submit feedback              |
+| `GET`  | `/api/employee/<employee_id>/feedback/`                                                | View feedback by employee    |
+| `GET`  | `/api/designation/<designation_name>/feedback/`                                        | View feedback by designation |
+| `GET`  | `/api/admin/feedback/?designation=Developer&start_date=YYYY-MM-DD&end_date=YYYY-MM-DD` | Admin: Filter feedback       |
 
+### ✅ 1. Register a new user
 
+```POST /api/register/```
+- Request
+```
+{
+  "username": "emma",
+  "email": "emma@example.com",
+  "password": "password123"
+}
+```
+- Response
+```
+{
+  "id": 11,
+  "username": "emma",
+  "email": "emma@example.com"
+}
+```
+### ✅ 2. Login and get JWT tokens
+
+```POST /api/login/```
+- Request
+```
+{
+  "username": "alice",
+  "password": "admin123"
+}
+```
+- Response
+```
+{
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+}
+```
+### ✅ 3. Refresh JWT Access Token
+
+```POST /api/token/refresh/```
+- Request
+```
+{
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+- Response
+```
+{
+  "access": "new_access_token_here"
+}
+```
+### ✅ 4. List Feedback Questions
+
+```GET /api/questions/?feedback_type=employee```
+Authorization: Bearer <access_token>
+- Response
+```
+[
+  { "id": 1, "question_text": "How do you rate your work environment?", "feedback_type": "employee" },
+  { "id": 2, "question_text": "How do you rate team collaboration?", "feedback_type": "employee" },
+  { "id": 3, "question_text": "Do you have clarity on company policies?", "feedback_type": "employee" }
+]
+```
+### ✅ 5. Submit Feedback
+
+```POST /api/submit-feedback/```
+Authorization: Bearer <access_token>
+- Request
+```
+{
+  "employee": 1,
+  "designation": "Developer",
+  "answers": [
+    { "question": 1, "rating": 5, "comment": "Excellent environment!" },
+    { "question": 2, "rating": 4, "comment": "Good teamwork and collaboration" }
+  ]
+}
+```
+- Response
+```
+{
+  "id": 21,
+  "employee_name": "john_doe",
+  "designation": "Developer",
+  "submitted_by": "alice",
+  "created_at": "2025-07-31T11:45:00Z",
+  "answers": [
+    { "question": 1, "question_text": "How do you rate your work environment?", "rating": 5, "comment": "Excellent environment!" },
+    { "question": 2, "question_text": "How do you rate team collaboration?", "rating": 4, "comment": "Good teamwork and collaboration" }
+  ]
+}
+```
+### ✅ 6. View Feedback by Employee
+
+```GET /api/employee/1/feedback/```
+Authorization: Bearer <access_token>
+- Response
+```
+[
+  {
+    "id": 21,
+    "employee_name": "john_doe",
+    "designation": "Developer",
+    "submitted_by": "alice",
+    "created_at": "2025-07-31T11:45:00Z",
+    "answers": [
+      { "question": 1, "question_text": "How do you rate your work environment?", "rating": 5, "comment": "Excellent environment!" },
+      { "question": 2, "question_text": "How do you rate team collaboration?", "rating": 4, "comment": "Good teamwork and collaboration" }
+    ]
+  }
+]
+```
+### ✅ 7. View Feedback by Designation
+
+```GET /api/designation/Developer/feedback/ ```
+Authorization: Bearer <access_token>
+- Response
+
+```
+[
+  {
+    "id": 21,
+    "employee_name": "john_doe",
+    "designation": "Developer",
+    "submitted_by": "alice",
+    "created_at": "2025-07-31T11:45:00Z",
+    "answers": [
+      { "question": 1, "question_text": "How do you rate your work environment?", "rating": 5, "comment": "Excellent environment!" }
+    ]
+  }
+]
+```
+### ✅ 8. Admin Feedback View (Filter by designation, department, date range)
+
+```GET /api/admin/feedback/?designation=Developer&start_date=2025-07-01&end_date=2025-07-31```
+Authorization: Bearer <admin_access_token>
+- Response
+```
+[
+  {
+    "id": 21,
+    "employee_name": "john_doe",
+    "designation": "Developer",
+    "submitted_by": "alice",
+    "created_at": "2025-07-31T11:45:00Z",
+    "answers": [
+      { "question": 1, "question_text": "How do you rate your work environment?", "rating": 5, "comment": "Excellent environment!" },
+      { "question": 2, "question_text": "How do you rate team collaboration?", "rating": 4, "comment": "Good teamwork and collaboration" }
+    ]
+  }
+]
+```
 ## Fixtures & Initial Data
 
 To load sample data for testing:
@@ -106,6 +258,3 @@ To load sample data for testing:
 ```bash
 python manage.py loaddata feedback/fixtures/initial_data.json
 ```
-
-
-
