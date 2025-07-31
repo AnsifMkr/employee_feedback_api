@@ -194,7 +194,7 @@ The default server URL is: `http://127.0.0.1:8000`
 ### ✅ 6. View Feedback by Designation
 
 ```GET /api/designation/Developer/feedback/ ```
-Authorization: Bearer <access_token>
+* Authorization: Bearer <access_token>
 - Response
 
 ```
@@ -213,8 +213,8 @@ Authorization: Bearer <access_token>
 ```
 ### ✅ 8. Admin Feedback View (Filter by designation, department, date range)
 
-```GET /api/admin/feedback/?designation=Developer&start_date=2025-07-01&end_date=2025-07-31```
-Authorization: Bearer <admin_access_token>
+```GET /api/admin/feedback/?designation=Developer&start_date=2025-06-01&end_date=2025-07-31```
+* Authorization: Bearer <admin_access_token>
 - Response
 ```
 [
